@@ -394,6 +394,7 @@ func (m *postgresDBRepo) UpdateProfile(user models.User) error {
 	return nil
 }
 
+// DeleteUserByID smaže uživatele podle id
 func (m *postgresDBRepo) DeleteUserByID(userID int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
