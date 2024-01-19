@@ -1,0 +1,1 @@
+add_index("users", "user_email", {"unique": true})

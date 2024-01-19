@@ -1,0 +1,63 @@
+{{template "base" .}}
+
+{{define "page-title"}}
+Nástěnka událostí
+{{end}}
+{{define "content"}}
+{{$user := index .Data "userInfo"}}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Login</h1>
+
+            <form method="post" action="/dashboard/cu/profile" novalidate>
+                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+
+                <div class="form-group mt-3">
+                    <label for="firstname">Jméno:</label>
+                    {{with .Form.Errors.Get "firstname"}}
+                    <label class="text-danger">{{.}}</label>
+                    {{end}}
+                    <input class="form-control {{with .Form.Errors.Get " firstname"}} is-invalid {{end}}" id="firstname"
+                        autocomplete="off" type='text' name='firstname' value="{{$user.FirstName}}" required>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="lastname">Příjmení:</label>
+                    {{with .Form.Errors.Get "lastname"}}
+                    <label class="text-danger">{{.}}</label>
+                    {{end}}
+                    <input class="form-control {{with .Form.Errors.Get " lastname"}} is-invalid {{end}}" id="lastname"
+                        autocomplete="off" type='text' name='lastname' value="{{$user.LastName}}" required>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="email">Email:</label>
+                    {{with .Form.Errors.Get "email"}}
+                    <label class="text-danger">{{.}}</label>
+                    {{end}}
+                    <p class="form-control" id="email" name='email'>
+                        {{$user.Email}}
+                    </p>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="password">Nové heslo:</label>
+                    {{with .Form.Errors.Get "password"}}
+                    <label class="text-danger">{{.}}</label>
+                    {{end}}
+                    <input class="form-control {{with .Form.Errors.Get " password"}} is-invalid {{end}}" id="password"
+                        autocomplete="off" type='password' name='password' value="" required>
+                </div>
+
+
+                <hr>
+                <a href="/dashboard/cu/profile-delete/{{$user.ID}}">
+                    Smazat
+                </a>
+                <input type="submit" class="btn btn-primary" value="Uložit">
+            </form>
+        </div>
+    </div>
+</div>
+{{end}}

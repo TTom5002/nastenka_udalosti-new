@@ -1,0 +1,42 @@
+{{template "base" .}}
+
+{{define "page-title"}}
+    Nástěnka událostí
+{{end}}
+{{define "content"}}
+    <p>Zkouška</p>
+
+    <div class="col-md-12">
+        {{$events := index .Data "events"}}
+
+        
+
+        <table class="table table-striped table-hover" id="all-res">
+            <thead>
+                <tr>
+                    <th>Nadpis</th>
+                    <th>Tělo</th>
+                    <th>Vytvořeno</th>
+                    <th>Upraveno</th>
+                    <th>Příjmení</th>
+                </tr>
+            </thead>
+            <tbody>
+        {{range $events}}
+            <tr>
+                <td>
+                    <a href="/dashboard/cu/posts/show-event/{{.ID}}">
+                        {{.Header}}
+                    </a>
+                    
+                </td>
+                <td>{{.Body}}</td>
+                <td>{{humanDate .CreatedAt}}</td>
+                <td>{{humanDate .UpdatedAt}}</td>
+                <td>{{.User.LastName}}</td>
+            </tr>
+        {{end}}
+            </tbody>
+        </table>
+    </div>
+{{end}}

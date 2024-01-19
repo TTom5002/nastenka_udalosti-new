@@ -1,0 +1,4 @@
+add_foreign_key("events", "event_author_id", {"users": ["user_id"]}, {
+    "on_delete": "CASCADE",
+    "on_update": "CASCADE",
+})

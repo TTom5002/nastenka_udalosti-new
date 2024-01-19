@@ -1,0 +1,9 @@
+create_table("events") {
+    t.Column("event_id", "integer", {primary: true})
+    t.Column("event_header", "string", {"default": "", "size": 1000})
+    t.Column("event_body", "string", {"default": "", "size": 10000})
+    t.Column("event_author_id", "integer", {})
+}
+
+rename_column("events", "created_at", "event_created_at")
+rename_column("events", "updated_at", "event_updated_at")

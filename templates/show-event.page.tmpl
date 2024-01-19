@@ -1,0 +1,39 @@
+{{template "base" .}}
+
+{{define "content"}}
+
+{{$event := index .Data "event"}}
+
+<form method="post" action="/dashboard/cu/posts/show-event/{{$event.ID}}" class="" novalidate>
+    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+    
+
+    <!-- TODO: Nezapomeň každý label a input jsou v divu tomu dej classu, label for a název, a pak input kde je tolik věcí že ani sám teď nevim -->
+
+    <div class="">
+        <label for="header">Nadpis příspěvku:</label>
+        {{with .Form.Errors.Get "header"}}
+            <label class="text-danger">{{.}}</label>
+        {{end}}
+        <input class=" {{with .Form.Errors.Get "header"}} is-invalid {{end}}"
+                id="header" autocomplete="off" type='text'
+                name='header' value="{{$event.Header}}" required>
+    </div>
+
+    <div class="">
+        <label for="body">Text:</label>
+        {{with .Form.Errors.Get "body"}}
+            <label class="text-danger">{{.}}</label>
+        {{end}}
+        <input class=" {{with .Form.Errors.Get "body"}} is-invalid {{end}}"
+                id="body" autocomplete="off" type='text'
+                name='body' value="{{$event.Body}}" required>
+    </div>
+    
+    <hr>
+    <a href="/dashboard/cu/posts/delete-event/{{$event.ID}}">
+        Smazat
+    </a>
+    <input type="submit" value="Aktualizovat">
+</form>
+{{end}}

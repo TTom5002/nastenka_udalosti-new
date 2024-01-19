@@ -1,0 +1,10 @@
+sql("INSERT INTO public.users (user_firstname,user_lastname,user_email,user_password,user_access_level,user_verified,user_created_at,user_updated_at) VALUES
+	 ('Tomáš','Tomšů','admin@admin.com','$2a$12$d0W50qlO0SDPny1JNqKKwuXJzkq2vd/eztycJERHndzQEMo4z79Se',3,true,'2023-12-29 00:00:00.000','2023-12-29 00:00:00.000'),
+	 ('Tom','Tom','a@a.com','$2a$12$DZxo4Pg/Y7xKjLuBzDuYXOCB2sAp5cWyZ6QXuRYt046QMUhWFrvcK',3,true,'2023-12-30 00:00:00.000','2023-12-30 00:00:00.000');
+")
+
+sql("INSERT INTO public.events (event_header,event_body,event_author_id,event_created_at,event_updated_at) VALUES
+	 ('asd','asd',1,'2023-12-30 14:49:01.129','2023-12-30 14:49:01.129'),
+	 ('dfg','dfg',1,'2023-12-30 14:49:21.484','2023-12-30 14:49:21.484'),
+	 ('test','test',2,'2023-12-30 16:50:47.775','2023-12-30 16:50:47.775');
+")
