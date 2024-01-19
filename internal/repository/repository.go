@@ -4,7 +4,6 @@ import "nastenka_udalosti/internal/models"
 
 // DatabaseRepo uchovává postgres funkce
 type DatabaseRepo interface {
-	AllUsers() bool
 	InsertEvent(event models.Event) error
 	// Authenticate(email, testPassword string) (int, string, bool, int, error)
 	Authenticate(email, testPassword string) (models.User, error)
@@ -16,4 +15,6 @@ type DatabaseRepo interface {
 	UpdateEventByID(event models.Event) error
 	ShowUnverifiedUsers() ([]models.User, error)
 	UpdateProfile(user models.User) error
+	DeleteUserByID(userID int) error
+	VerUserByID(userID int) error
 }

@@ -11,10 +11,6 @@ import (
 
 // TODO: Udělej všechny databázové dotazy
 
-func (m *postgresDBRepo) AllUsers() bool {
-	return true
-}
-
 // ShowEvents zobrazí určitý počet příspěvků
 func (m *postgresDBRepo) ShowEvents() ([]models.Event, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
@@ -395,5 +391,38 @@ func (m *postgresDBRepo) UpdateProfile(user models.User) error {
 		}
 	}
 
+	return nil
+}
+
+func (m *postgresDBRepo) DeleteUserByID(userID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `
+	DELETE FROM users WHERE user_id=$1;
+	`
+
+	_, err := m.DB.ExecContext(ctx, query, userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// VerUserByID změní ověření uživatele na true podle ID
+func (m *postgresDBRepo) VerUserByID(userID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `
+	UPDATE users
+	SET user_verified=true, user_updated_at=$1
+	WHERE user_id=$2;	
+	`
+
+	_, err := m.DB.ExecContext(ctx, query, time.Now(), userID)
+	if err != nil {
+		return err
+	}
 	return nil
 }

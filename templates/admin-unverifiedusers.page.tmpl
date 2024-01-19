@@ -20,6 +20,7 @@ Nástěnka událostí
                     <th>Příjmení</th>
                     <th>Email</th>
                     <th>Ověření</th>
+                    <th>Odmítnout</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,13 +31,16 @@ Nástěnka událostí
                     <td>{{.LastName}}</td>
                     <td>{{.Email}}</td>
                     <td>
-
+                        <input type="checkbox" value="{{.ID}}" name="to_ver_{{.ID}}">
+                    </td>
+                    <td>
+                        <input type="checkbox" value="{{.ID}}" name="to_dec_{{.ID}}">
                     </td>
                 </tr>
                 {{end}}
             </tbody>
         </table>
-        <input type="submit" class="btn btn-primary" value="Save Changes">
+        <input type="submit" class="btn btn-primary" value="Uložit změny">
     </form>
 
 </div>

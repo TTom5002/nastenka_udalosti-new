@@ -60,6 +60,7 @@ func routes(app *config.AppConfig) http.Handler {
 			mux.Use(Admin)
 			mux.Get("/", handlers.Repo.Home)
 			mux.Get("/unverified-users", handlers.Repo.ShowAllUnverifiedUsers)
+			mux.Post("/unverified-users", handlers.Repo.PostVerUsers)
 			// mux.Get("/", handlers.Repo.ViewProfile)
 			// mux.Post("/edit", handlers.Repo.EditProfile)
 			// Další akce s profilem

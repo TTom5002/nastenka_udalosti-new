@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"nastenka_udalosti/internal/config"
 	"nastenka_udalosti/internal/driver"
@@ -228,13 +227,8 @@ func (m *Repository) PostSignup(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	// email := r.Form.Get("email")
 	password := r.Form.Get("password")
-	// FIXME: Zjisti jestli bude potřeba případně odstraň
 	passwordver := r.Form.Get("passwordver")
-
-	fmt.Println(password)
-	fmt.Println(passwordver)
 
 	form := forms.New(r.PostForm)
 	form.Required("firstname", "lastname", "email", "password", "passwordver")
@@ -429,6 +423,7 @@ func (m *Repository) PostEditProfile(w http.ResponseWriter, r *http.Request) {
 		ID:        userInfo.ID,
 		FirstName: r.Form.Get("firstname"),
 		LastName:  r.Form.Get("lastname"),
+		Email:     r.Form.Get("email"),
 		Password:  r.Form.Get("password"),
 	}
 
@@ -437,6 +432,12 @@ func (m *Repository) PostEditProfile(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 	form.Required("firstname", "lastname")
+
+	if !form.SamePassword(r.Form.Get("password"), r.Form.Get("passwordver")) {
+		form.Errors.Add("password", "Hesla se neshodují")
+		form.Errors.Add("passwordver", "Hesla se neshodují")
+	}
+
 	if !form.Valid() {
 		render.Template(w, r, "profile.page.tmpl", &models.TemplateData{
 			Data: data,
@@ -469,4 +470,33 @@ func (m *Repository) PostEditProfile(w http.ResponseWriter, r *http.Request) {
 	m.App.Session.Put(r.Context(), "userInfo", newUserInfo)
 	m.App.Session.Put(r.Context(), "flash", "Profil se upravil")
 	http.Redirect(w, r, "/dashboard/cu/profile", http.StatusSeeOther)
+}
+
+func (m *Repository) PostVerUsers(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	for name := range r.PostForm {
+		if strings.HasPrefix(name, "to_ver") {
+			exploded := strings.Split(name, "_")
+			userID, _ := strconv.Atoi(exploded[2])
+			err := m.DB.VerUserByID(userID)
+			if err != nil {
+				log.Println(err)
+			}
+		} else if strings.HasPrefix(name, "to_dec") {
+			exploded := strings.Split(name, "_")
+			userID, _ := strconv.Atoi(exploded[2])
+			err := m.DB.DeleteUserByID(userID)
+			if err != nil {
+				log.Println(err)
+			}
+		}
+	}
+
+	m.App.Session.Put(r.Context(), "flash", "Changes saved")
+	http.Redirect(w, r, "/dashboard/admin/unverified-users", http.StatusSeeOther)
 }
